@@ -40,13 +40,14 @@ Ensure the following tools are installed and configured:
 ## Build Instructions
 
 ### 1. Configure Environment Variables
-Set up your environment variables before building:
+Set up your environment variables before building. Ensure you use the CMake version from your Android SDK (e.g., 3.22.1 or 4.1.2+).
 
 ```bash
 export JAVA_HOME="/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/29.0.14206865
-export PATH=$JAVA_HOME/bin:$ANDROID_HOME/cmake/3.22.1/bin:$PATH
+# Update the cmake version to match what is installed in your SDK (e.g. 4.1.2)
+export PATH=$JAVA_HOME/bin:$ANDROID_HOME/cmake/4.1.2/bin:$PATH
 ```
 
 *(Adjust paths if your versions differ)*
@@ -54,6 +55,12 @@ export PATH=$JAVA_HOME/bin:$ANDROID_HOME/cmake/3.22.1/bin:$PATH
 ### 2. Run CMake Configuration
 Use the `qt-cmake` wrapper from your Qt Android kit.
 
+**Clean Build (Recommended for first run or after errors):**
+```bash
+rm -rf build_android
+```
+
+**Configure:**
 ```bash
 ~/Qt/6.10.2/android_arm64_v8a/bin/qt-cmake . -B build_android \
     -DANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
@@ -72,6 +79,7 @@ The generated APK will be located at:
 ## Troubleshooting
 *   **Java Version Error**: If you see "Unsupported class file major version", check that `JAVA_HOME` points to JDK 21 or 17, not a newer version.
 *   **Missing Modules**: Ensure `QtMultimedia` and `QtSerialPort` are installed for the Android architecture you are building for.
+*   **Linker Errors (mbelib)**: If you see `undefined symbol: mbe_initMbeParms` (or similar), ensure `mbe/mbelib.h` has `extern "C"` wrapper guards around the includes and function declarations.
 
 ## Development with Android Studio
 
