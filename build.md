@@ -72,3 +72,30 @@ The generated APK will be located at:
 ## Troubleshooting
 *   **Java Version Error**: If you see "Unsupported class file major version", check that `JAVA_HOME` points to JDK 21 or 17, not a newer version.
 *   **Missing Modules**: Ensure `QtMultimedia` and `QtSerialPort` are installed for the Android architecture you are building for.
+
+## Development with Android Studio
+
+If you wish to use Android Studio for debugging or further development:
+
+1.  **Do NOT open the root `DroidStar` folder**. This is a C++/CMake project, and Android Studio may fail to correctly configure the Android SDK context for Java files, leading to errors like `package android.hardware.usb does not exist`.
+2.  **Open the Generated Project**:
+    *   Run the CMake configuration step first (Step 2 above).
+    *   Navigate to the build directory: `build_android/android-build`.
+    *   Open **this directory** in Android Studio.
+    *   It will be recognized as a standard Gradle Android project, and Java formatting/symbol resolution will work correctly.
+
+## Optional Features
+
+The following optional features are currently disabled but can be investigated if needed:
+
+### 1. MD380 Vocoder (`USE_MD380_VOCODER`)
+*   **Description**: Adds support for AMBE+2 vocoder using firmware emulation.
+*   **Status**: **Disabled in build**.
+*   **Note**: For **Android arm64**, the `vocoder_plugin.android.arm64` is now **bundled** with the APK and loaded dynamically at runtime. No manual download or build configuration is needed for arm64.
+*   **Legacy Info**: The library is strictly 32-bit ARM (`armeabi-v7a`). It is incompatible with `arm64-v8a` builds.
+
+### 2. FLite TTS (`USE_FLITE`)
+*   **Description**: Text-to-Speech support.
+*   **Status**: **Disabled**.
+*   **Requirement**: Requires cross-compiled `flite` libraries for Android.
+
