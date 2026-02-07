@@ -1,2 +1,10 @@
 build/
+build_android/
 .vscode/
+.idea/
+*.user
+*.user.*
+CMakeUserPresets.json
+.DS_Store
+*.apk
+3rdparty/android_openssl/

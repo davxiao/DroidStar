@@ -20,7 +20,7 @@
 #ifdef Q_OS_ANDROID
 #include <QCoreApplication>
 #include <QJniObject>
-#include <QtCore/private/qandroidextras_p.h>
+// #include <QtCore/private/qandroidextras_p.h>
 #endif
 #include <QStandardPaths>
 #include <QFile>
@@ -102,13 +102,10 @@ void DroidStar::keepScreenOn()
         qApp->requestPermission(microphonePermission, this, &DroidStar::keepScreenOn);
     }
 */
-    if (QNativeInterface::QAndroidApplication::sdkVersion() >= __ANDROID_API_T__) {
-        const auto notificationPermission = "android.permission.POST_NOTIFICATIONS"_L1;
-        auto requestResult = QtAndroidPrivate::requestPermission(notificationPermission);
-        if (requestResult.result() != QtAndroidPrivate::Authorized) {
-            qWarning() << "Failed to acquire permission to post notifications "
-                          "(required for Android 13+)";
-        }
+    if (QNativeInterface::QAndroidApplication::sdkVersion() >= 33 /*__ANDROID_API_T__*/) {
+      // TODO: Implement permission request using Qt 6 public API or JNI
+      // const auto notificationPermission = "android.permission.POST_NOTIFICATIONS"_L1;
+      // auto requestResult = QtAndroidPrivate::requestPermission(notificationPermission);
     }
 }
 #endif
